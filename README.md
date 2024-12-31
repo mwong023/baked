@@ -14,6 +14,10 @@ BAKeD (Branch Analysis in Keboola using DataComPy) is a Streamlit application th
 - 🔄 Interactive branch selection from Keboola
 - 📊 Schema and table comparison between production and development
 
+Example of the results:
+
+![BAKeD UI Screenshot](https://github.com/mwong023/baked/blob/main/assets/Screenshot%202024-12-31%20at%209.17.02%E2%80%AFAM.png?raw=true)
+
 
 ## Prerequisites
 
@@ -56,6 +60,7 @@ KBC_URL=<<<ie. https://connection.keboola.com>>>
  - After selecting the join column for the compare, the application will run datacompy compare. 
  - For more information on datacompy compare, refer to the datacompy [website](https://capitalone.github.io/datacompy/).
 - The application uses [Polars method](https://capitalone.github.io/datacompy/polars_usage.html) for datacompy compare. 
+
  
 ## Contributing
 
