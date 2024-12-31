@@ -9,7 +9,11 @@ import polars as pl
 # Load environment variables
 load_dotenv()
 
-# Must be the first Streamlit command used
+###########################
+# Streamlit Page Configuration #
+###########################
+
+# Configure Streamlit page settings - must be called before any other Streamlit commands
 st.set_page_config(
     page_title="🥧 BAKeD",
     page_icon="🥧",
@@ -50,9 +54,12 @@ def add_header():
     # Add separator
     st.markdown("---")
 
-# Start of the main app
+###########################
+# Main Application #
+###########################
 add_header()
 
+# Fetches a list of development branches from the Keboola API.
 def get_branches():
     """Fetch branches from Keboola API"""
     kbc_token = os.getenv('KBC_TOKEN')
@@ -74,6 +81,7 @@ def get_branches():
         return branch_options
     return {}
 
+# Fetches schemas from Snowflake that match the branch ID
 def get_schemas(branch_id):
     """Fetch schemas from Snowflake that match the branch ID"""
     try:
@@ -110,6 +118,7 @@ def get_schemas(branch_id):
         if 'ctx' in locals():
             ctx.close()
 
+# Fetches tables from the selected schema in Snowflake
 def get_tables(schema_name):
     """Fetch tables from the selected schema in Snowflake"""
     try:
@@ -147,6 +156,7 @@ def get_tables(schema_name):
         if 'ctx' in locals():
             ctx.close()
 
+# Fetches the comparison between production and development schemas
 def get_dataframe_comparison(database, dev_schema, table_name, branch_id, join_column):
     """Get comparison between production and development schemas"""
     try:
@@ -202,6 +212,7 @@ def get_dataframe_comparison(database, dev_schema, table_name, branch_id, join_c
         if 'ctx' in locals():
             ctx.close()
 
+# Formats the datacompy comparison results into structured Streamlit output
 def format_comparison_report(compare):
     """Format the datacompy comparison results into structured Streamlit output"""
     
@@ -280,6 +291,7 @@ def format_comparison_report(compare):
     else:
         st.error("❌ The datasets have differences")
 
+# Fetches columns from the selected table
 def get_columns(schema_name, table_name):
     """Fetch columns from the selected table"""
     try:
@@ -322,7 +334,11 @@ def get_columns(schema_name, table_name):
         if 'ctx' in locals():
             ctx.close()
 
-# Set up the Streamlit page
+###########################
+# Streamlit UI Setup #
+###########################
+
+# Set up the Streamlit page 
 st.title('Keboola Branch Manager')
 
 # First dropdown - Branch Selection
