@@ -1,6 +1,6 @@
 # 🥧 BAKeD 
 
-BAKeD (Branch Analysis in Keboola using DataComPy) is a Streamlit application that provides an interactive interface for comparing data between production and development branches in Keboola. It uses DataComPy to perform detailed comparisons of datasets and presents the results in an easy-to-understand format.
+BAKeD (Branch Analysis in Keboola using DataComPy) is a Streamlit application that provides an easy to use UI for comparing data between production and development branches in Keboola. It uses DataComPy to perform detailed comparisons of datasets and presents the results in an easy-to-understand format.
 
 ## Features
 
@@ -12,15 +12,11 @@ BAKeD (Branch Analysis in Keboola using DataComPy) is a Streamlit application th
   - Column analysis
   - Value differences
   - Unique rows in each environment
-- 🎯 Visual progress indicators for match rates
-- 💻 User-friendly interface built with Streamlit
+- 💻 User-friendly interface of datacompy results
 
 ## Prerequisites
 
-- Python 3.9+
-- Snowflake account
-- Keboola account with API access
-- Required Python packages (see `requirements.txt`)
+- Keboola account
 
 ## Installation
 
@@ -64,13 +60,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Authors
 
-- Created by [Cuesta Partners](https://www.cuestapartners.com)
+- Created by [Cuesta Partners](https://www.cuestapartners.com) team
 - Contributions and thanks to Cuesta Hackathon BAKeD team for the initial build:
     - Daniela Giraldo
     - [Estefany Aguilar](https://www.linkedin.com/in/estefany-aguilar-herrera-120121191/)
     - [Eduardo Mateus](https://www.linkedin.com/in/eduardo-d%C3%ADaz-mateus-47a406143/)
     - [Andres Jaramillo](https://www.linkedin.com/in/afjo/)
 - Thanks to Fisa ([Martin Fiser](https://www.linkedin.com/in/fisermartin/)) for suggesting improvements and the beers that led to this idea.
+- Contact me at [Marcus Wong](https://www.linkedin.com/in/wongmarcus) for any questions or comments.
 
 ## Acknowledgments
 
