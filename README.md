@@ -16,7 +16,7 @@ BAKeD (Branch Analysis in Keboola using DataComPy) is a Streamlit application th
 
 Example of the results:
 
-![BAKeD UI Screenshot]()
+![BAKeD UI Screenshot](assets/baked%20demo.gif)
 
 
 ## Prerequisites
