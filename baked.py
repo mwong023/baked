@@ -375,17 +375,19 @@ if branch_options:
         branch_id = branch_options[selected_branch]
         
         try:
-            # Update comparison to use the selected join column
-            comparison = get_dataframe_comparison(
-                database=st.secrets.database,
-                dev_schema=selected_schema,
-                table_name=selected_table,
-                branch_id=branch_id,
-                join_column=selected_column
-            )
-            
-            # Format and display the comparison
-            format_comparison_report(comparison)
+            # Add loading message
+            with st.spinner('Generating DataComPy comparison report results...'):
+                # Update comparison to use the selected join column
+                comparison = get_dataframe_comparison(
+                    database=st.secrets.database,
+                    dev_schema=selected_schema,
+                    table_name=selected_table,
+                    branch_id=branch_id,
+                    join_column=selected_column
+                )
+                
+                # Format and display the comparison
+                format_comparison_report(comparison)
             
         except Exception as e:
             st.error(f"Error performing comparison: {str(e)}")

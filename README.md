@@ -4,19 +4,20 @@ BAKeD (Branch Analysis in Keboola using DataComPy) is a Streamlit application th
 
 ## Features
 
-- 🔄 Interactive branch selection from Keboola
-- 📊 Schema and table comparison between production and development
+- 💻 User-friendly interface of [datacompy results](https://capitalone.github.io/datacompy/polars_usage.html#reports)
 - 📈 Detailed comparison metrics including:
   - Match statistics
   - Row counts
   - Column analysis
   - Value differences
   - Unique rows in each environment
-- 💻 User-friendly interface of datacompy results
+- 🔄 Interactive branch selection from Keboola
+- 📊 Schema and table comparison between production and development
+
 
 ## Prerequisites
 
-- Keboola account
+- Keboola project
 
 ## Installation
 
@@ -38,9 +39,11 @@ warehouse = "your_warehouse"
 database = "your_database"
 ```
 
-If you happen to be installing outside of Keboola, you will also want to set up a token in the .env file with the following as per [docs](As per [docs](https://help.keboola.com/components/data-apps/#access-storage-from-data-app)):
- - KBC_TOKEN
- - KBC_URL
+If you happen to be installing outside of Keboola, you will also want to set up in the .env file with the following as per [docs](As per [docs](https://help.keboola.com/components/data-apps/#access-storage-from-data-app)):
+```
+KBC_TOKEN=<<<master_token>>>
+KBC_URL=<<<ie. https://connection.keboola.com>>>
+```
 
 
 
