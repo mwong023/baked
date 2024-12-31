@@ -50,6 +50,8 @@ def add_header():
     
     # Add author credit with link
     st.markdown("Written by [Cuesta Partners](https://www.cuestapartners.com)")
+
+    st.markdown("This application is still being tested. Any bugs, please report to mwong@cuestapartners.com.")
     
     # Add separator
     st.markdown("---")
