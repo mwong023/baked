@@ -152,11 +152,11 @@ def get_dataframe_comparison(database, dev_schema, table_name, branch_id, join_c
     try:
         # Establish Snowflake connection
         ctx = snowflake.connector.connect(
-            user = "SAPI_WORKSPACE_995497350",
-            password = os.getenv('SNOWFLAKE_PASSWORD'),
-            account = "keboola",
-            warehouse = "KEBOOLA_PROD_SMALL",
-            database = "SAPI_9508"
+            user = st.secrets.user,
+            password = st.secrets.password, 
+            account = st.secrets.account,
+            warehouse = st.secrets.warehouse,
+            database = st.secrets.database
         )
         
         cursor = ctx.cursor()
