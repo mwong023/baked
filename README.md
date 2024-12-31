@@ -44,7 +44,7 @@ Assuming you are installing directly into Keboola, within the Secrets section, s
 ```toml
 user = "your_username"
 password = "your_password"
-account = "your_account"
+account = keboola #(if using keboola on us-west-2 ... if in different region, see https://docs.snowflake.com/en/user-guide/admin-account-identifier)
 warehouse = "your_warehouse"
 database = "your_database"
 ```
