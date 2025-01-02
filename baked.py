@@ -376,22 +376,24 @@ if branch_options:
     if selected_branch and selected_schema and selected_table and selected_column:
         branch_id = branch_options[selected_branch]
         
-        try:
-            # Add loading message
-            with st.spinner('Generating DataComPy comparison report results...'):
-                # Update comparison to use the selected join column
-                comparison = get_dataframe_comparison(
-                    database=st.secrets.database,
-                    dev_schema=selected_schema,
-                    table_name=selected_table,
-                    branch_id=branch_id,
-                    join_column=selected_column
-                )
-                
-                # Format and display the comparison
-                format_comparison_report(comparison)
+        # Add button for report generation
+        if st.button('Generate Compare Report'):
+            try:
+                # Add loading message
+                with st.spinner('Generating DataComPy comparison report results...'):
+                    # Update comparison to use the selected join column
+                    comparison = get_dataframe_comparison(
+                        database=st.secrets.database,
+                        dev_schema=selected_schema,
+                        table_name=selected_table,
+                        branch_id=branch_id,
+                        join_column=selected_column
+                    )
+                    
+                    # Format and display the comparison
+                    format_comparison_report(comparison)
             
-        except Exception as e:
-            st.error(f"Error performing comparison: {str(e)}")
+            except Exception as e:
+                st.error(f"Error performing comparison: {str(e)}")
 else:
     st.error("No branches found or error connecting to API")
