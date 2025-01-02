@@ -5,6 +5,7 @@ import snowflake.connector
 import datacompy
 from dotenv import load_dotenv
 import polars as pl
+from pygwalker.api.streamlit import StreamlitRenderer
 
 # Load environment variables
 load_dotenv()
@@ -179,13 +180,11 @@ def get_dataframe_comparison(database, dev_schema, table_name, branch_id, join_c
         # Query for df1 (production)
         query1 = f'SELECT * FROM "{database}"."{prod_schema}"."{table_name}"'
         cursor.execute(query1)
-        # First get pandas DataFrame then convert to Polars
         df1 = pl.from_pandas(cursor.fetch_pandas_all())
         
         # Query for df2 (development)
         query2 = f'SELECT * FROM "{database}"."{dev_schema}"."{table_name}"'
         cursor.execute(query2)
-        # First get pandas DataFrame then convert to Polars
         df2 = pl.from_pandas(cursor.fetch_pandas_all())
         
         # Drop _timestamp column if it exists in either dataframe
@@ -193,8 +192,35 @@ def get_dataframe_comparison(database, dev_schema, table_name, branch_id, join_c
             df1 = df1.drop('_timestamp')
         if '_timestamp' in df2.columns:
             df2 = df2.drop('_timestamp')
+            
+        # Create merged dataframe with aligned columns
+        df_merged = df1.join(
+            df2,
+            on=join_column,  # Using the selected column from dropdown
+            how='outer',
+            suffix='_dev'
+        ).rename(
+            {col: f"{col}_prod" for col in df1.columns if col != join_column}
+        )
         
-        # Compare the dataframes using PolarsCompare
+        # Reorder columns to put matching columns next to each other
+        all_columns = df_merged.columns
+        base_columns = set([col.replace('_prod', '').replace('_dev', '') for col in all_columns])
+        
+        new_column_order = []
+        for base_col in base_columns:
+            prod_col = f"{base_col}_prod" if f"{base_col}_prod" in all_columns else base_col
+            dev_col = f"{base_col}_dev" if f"{base_col}_dev" in all_columns else base_col
+            
+            if prod_col in all_columns:
+                new_column_order.append(prod_col)
+            if dev_col in all_columns:
+                new_column_order.append(dev_col)
+        
+        # Reorder the columns
+        df_merged = df_merged.select(new_column_order)
+        
+        # Continue with your existing datacompy comparison
         compare = datacompy.PolarsCompare(
             df1,
             df2,
@@ -203,7 +229,7 @@ def get_dataframe_comparison(database, dev_schema, table_name, branch_id, join_c
             df2_name='Development'
         )
         
-        return compare
+        return compare, df_merged  # Now returning both the comparison and merged dataframe
         
     except Exception as e:
         raise Exception(f"Error performing comparison: {str(e)}")
@@ -379,10 +405,8 @@ if branch_options:
         # Add button for report generation
         if st.button('Generate Compare Report'):
             try:
-                # Add loading message
                 with st.spinner('Generating DataComPy comparison report results...'):
-                    # Update comparison to use the selected join column
-                    comparison = get_dataframe_comparison(
+                    comparison, df_merged = get_dataframe_comparison(
                         database=st.secrets.database,
                         dev_schema=selected_schema,
                         table_name=selected_table,
@@ -390,9 +414,18 @@ if branch_options:
                         join_column=selected_column
                     )
                     
-                    # Show results in an expander
+                    # First expander for comparison results
                     with st.expander("Comparison Results", expanded=True):
                         format_comparison_report(comparison)
+                    
+                    # Second expander for PyGWalker visualization
+                    with st.expander("Interactive Data Explorer", expanded=True):
+                        @st.cache_resource
+                        def get_pyg_renderer() -> "StreamlitRenderer":
+                            return StreamlitRenderer(df_merged, spec="./gw_config.json", spec_io_mode="rw", kernel_computation=True)
+                        
+                        renderer = get_pyg_renderer()
+                        renderer.explorer()
             
             except Exception as e:
                 st.error(f"Error performing comparison: {str(e)}")

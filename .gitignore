@@ -52,7 +52,6 @@ venv.bak/
 # Snowflake
 *.snowsql
 snowflake_session/
-
 # Database
 *.db
 *.sqlite3
@@ -66,3 +65,6 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
+
+# PyGWalker
+gw_config.json
