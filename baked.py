@@ -390,8 +390,9 @@ if branch_options:
                         join_column=selected_column
                     )
                     
-                    # Format and display the comparison
-                    format_comparison_report(comparison)
+                    # Show results in an expander
+                    with st.expander("Comparison Results", expanded=True):
+                        format_comparison_report(comparison)
             
             except Exception as e:
                 st.error(f"Error performing comparison: {str(e)}")
