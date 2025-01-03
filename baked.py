@@ -5,7 +5,6 @@ import snowflake.connector
 import datacompy
 from dotenv import load_dotenv
 import polars as pl
-from pygwalker.api.streamlit import StreamlitRenderer
 
 # Load environment variables
 load_dotenv()
