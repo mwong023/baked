@@ -30,7 +30,7 @@ env.bak/
 venv.bak/
 
 # Streamlit
-.streamlit/secrets.toml
+.streamlit/*
 
 # IDE specific files
 .idea/

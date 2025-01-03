@@ -198,7 +198,7 @@ def get_dataframe_comparison(database, dev_schema, table_name, branch_id, join_c
         compare = datacompy.PolarsCompare(
             df1,
             df2,
-            join_columns=[join_column],
+            join_columns=join_column,
             df1_name='Production',
             df2_name='Development'
         )
