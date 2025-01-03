@@ -5,6 +5,7 @@ import snowflake.connector
 import datacompy
 from dotenv import load_dotenv
 import polars as pl
+from pygwalker.api.streamlit import StreamlitRenderer
 
 # Load environment variables
 load_dotenv()
@@ -365,36 +366,34 @@ if branch_options:
         options=[''] + tables
     )
     
-    # Fourth dropdown - Join Column Selection
-    columns = get_columns(selected_schema, selected_table) if selected_schema and selected_table else []
-    selected_column = st.selectbox(
-        'Select join column:',
-        options=[''] + columns
-    )
+    # Change the fourth dropdown from selectbox to multiselect
+columns = get_columns(selected_schema, selected_table) if selected_schema and selected_table else []
+selected_columns = st.multiselect(
+    'Select join columns:',
+    options=[''] + columns
+)
+
+# Show comparison if all selections are made
+if selected_branch and selected_schema and selected_table and selected_columns:  # Changed to check selected_columns
+    branch_id = branch_options[selected_branch]
     
-    # Show comparison if all selections are made
-    if selected_branch and selected_schema and selected_table and selected_column:
-        branch_id = branch_options[selected_branch]
+    # Add button for report generation
+    if st.button('Generate Compare Report'):
+        try:
+            # Add loading message
+            with st.spinner('Generating DataComPy comparison report results...'):
+                # Update comparison to use the selected join columns (now a list)
+                comparison = get_dataframe_comparison(
+                    database=st.secrets.database,
+                    dev_schema=selected_schema,
+                    table_name=selected_table,
+                    branch_id=branch_id,
+                    join_column=selected_columns  # Pass the list of selected columns
+                )
+                
+                # Show results in an expander
+                with st.expander("Comparison Results", expanded=True):
+                    format_comparison_report(comparison)
         
-        # Add button for report generation
-        if st.button('Generate Compare Report'):
-            try:
-                # Add loading message
-                with st.spinner('Generating DataComPy comparison report results...'):
-                    # Update comparison to use the selected join column
-                    comparison = get_dataframe_comparison(
-                        database=st.secrets.database,
-                        dev_schema=selected_schema,
-                        table_name=selected_table,
-                        branch_id=branch_id,
-                        join_column=selected_column
-                    )
-                    
-                    # Show results in an expander
-                    with st.expander("Comparison Results", expanded=True):
-                        format_comparison_report(comparison)
-            
-            except Exception as e:
-                st.error(f"Error performing comparison: {str(e)}")
-else:
-    st.error("No branches found or error connecting to API")
+        except Exception as e:
+            st.error(f"Error performing comparison: {str(e)}")

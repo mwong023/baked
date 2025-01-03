@@ -66,3 +66,6 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
+
+# PyGWalker
+gw_config.json
